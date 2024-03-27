@@ -1,9 +1,7 @@
 import React from "react";
 import CalculatorForm from "src/components/CalculatorForm";
 
-
 const CalculatorPage = () => {
-
 	return (
 		<div>
 			<div className="flex items-center justify-between ml-20 mr-20 rounded-3xl">

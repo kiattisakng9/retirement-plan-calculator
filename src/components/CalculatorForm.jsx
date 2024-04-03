@@ -4,7 +4,7 @@ import calculateIcon from "src/assets/images/calculate-icon.gif";
 import FormButton from "src/components/FormButton";
 import { calculateRetirementData } from "src/utils/calculation.util";
 
-const CalculatorForm = () => {
+const CalculatorForm = ({setRetirementData}) => {
 	const [configName, setConfigName] = useState("");
 	const [age, setAge] = useState(0);
 	const [initialFund, setInitialFund] = useState(0);
@@ -45,7 +45,7 @@ const CalculatorForm = () => {
 			retirementReturn
 			);
 			
-			console.table(resultData);
+			setRetirementData(resultData)
 		e.preventDefault();
 	};
 	return (

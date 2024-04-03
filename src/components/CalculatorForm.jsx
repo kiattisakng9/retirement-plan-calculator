@@ -2,23 +2,26 @@ import React, { useState } from "react";
 import CalculatorFormInput from "src/components/CalculatorFormInput";
 import calculateIcon from "src/assets/images/calculate-icon.gif";
 import FormButton from "src/components/FormButton";
+import { calculateRetirementData } from "src/utils/calculation.util";
 
 const CalculatorForm = () => {
 	const [configName, setConfigName] = useState("");
-	const [age, setAge] = useState("");
-	const [initialFund, setInitialFund] = useState("");
-	const [savingsPerMonth, setSavingsPerMonth] = useState("");
-	const [savingsGrowth, setSavingsGrowth] = useState("");
-	const [retirementAge, setRetirementAge] = useState("");
-	const [monthlyExpenses, setMonthlyExpenses] = useState("");
-	const [inflation, setInflation] = useState("");
-	const [investmentReturn, setInvestmentReturn] = useState("");
-	const [retirementReturn, setRetirementReturn] = useState("");
+	const [age, setAge] = useState(0);
+	const [initialFund, setInitialFund] = useState(0);
+	const [savingsPerMonth, setSavingsPerMonth] = useState(0);
+	const [savingsGrowth, setSavingsGrowth] = useState(0);
+	const [retirementAge, setRetirementAge] = useState(0);
+	const [monthlyExpenses, setMonthlyExpenses] = useState(0);
+	const [inflation, setInflation] = useState(0);
+	const [investmentReturn, setInvestmentReturn] = useState(0);
+	const [retirementReturn, setRetirementReturn] = useState(0);
+	const [endAge, setEndAge] = useState(99);
 
 	const handleSubmit = (e) => {
 		const inputValues = {
 			configName,
 			age,
+			endAge,
 			initialFund,
 			savingsPerMonth,
 			savingsGrowth,
@@ -29,6 +32,20 @@ const CalculatorForm = () => {
 			retirementReturn,
 		};
 		console.log("inputValues: ", inputValues);
+		const resultData = calculateRetirementData(
+			age,
+			endAge,
+			initialFund,
+			savingsPerMonth,
+			savingsGrowth,
+			retirementAge,
+			monthlyExpenses,
+			inflation,
+			investmentReturn,
+			retirementReturn
+			);
+			
+			console.table(resultData);
 		e.preventDefault();
 	};
 	return (
@@ -61,10 +78,19 @@ const CalculatorForm = () => {
 					isRequired={true}
 				/>
 				<CalculatorFormInput
+					inputId="end-age-input"
+					inputName="inputEndAge"
+					inputDisplayLabel="End Age"
+					inputPlaceholder="E.g., 99"
+					inputType="number"
+					setStateFn={setEndAge}
+					isRequired={false}
+				/>
+				<CalculatorFormInput
 					inputId="initial-fund-input"
 					inputName="inputInitialFund"
 					inputDisplayLabel="Initial Fund"
-					inputPlaceholder="E.g., 100000"
+					inputPlaceholder="E.g., 1,000,000"
 					inputType="number"
 					setStateFn={setInitialFund}
 					isRequired={true}
@@ -73,7 +99,7 @@ const CalculatorForm = () => {
 					inputId="savings-per-month-input"
 					inputName="inputSavingsPerMonth"
 					inputDisplayLabel="Savings Per Month"
-					inputPlaceholder="E.g., 10000"
+					inputPlaceholder="E.g., 30,000"
 					inputType="number"
 					setStateFn={setSavingsPerMonth}
 					isRequired={true}
@@ -82,7 +108,7 @@ const CalculatorForm = () => {
 					inputId="savings-growth-input"
 					inputName="inputSavingsGrowth"
 					inputDisplayLabel="Savings Growth"
-					inputPlaceholder="E.g., 50000"
+					inputPlaceholder="E.g., 3"
 					inputType="number"
 					setStateFn={setSavingsGrowth}
 					isRequired={true}
@@ -91,7 +117,7 @@ const CalculatorForm = () => {
 					inputId="monthly-expenses-input"
 					inputName="inputMonthlyExpenses"
 					inputDisplayLabel="Monthly Expenses"
-					inputPlaceholder="E.g., 5000"
+					inputPlaceholder="E.g., 40,000"
 					inputType="number"
 					setStateFn={setMonthlyExpenses}
 					isRequired={true}
@@ -100,7 +126,7 @@ const CalculatorForm = () => {
 					inputId="inflation-input"
 					inputName="inputInflation"
 					inputDisplayLabel="Inflation (%)"
-					inputPlaceholder="E.g., 1.2"
+					inputPlaceholder="E.g., 2.5"
 					inputType="number"
 					setStateFn={setInflation}
 					isRequired={true}
@@ -109,7 +135,7 @@ const CalculatorForm = () => {
 					inputId="investment-return-input"
 					inputName="inputInvestmentReturn"
 					inputDisplayLabel="Investment Return (%)"
-					inputPlaceholder="E.g., 10"
+					inputPlaceholder="E.g., 4"
 					inputType="number"
 					setStateFn={setInvestmentReturn}
 					isRequired={true}
@@ -118,7 +144,7 @@ const CalculatorForm = () => {
 					inputId="retirement-return-input"
 					inputName="inputRetirementReturn"
 					inputDisplayLabel="Retirement Return (%)"
-					inputPlaceholder="E.g., 20"
+					inputPlaceholder="E.g., 3"
 					inputType="number"
 					setStateFn={setRetirementReturn}
 					isRequired={true}

@@ -17,7 +17,7 @@ const WealthChart = ({ retirementData }) => {
 
 			const expenses = retirementData.map((item) => item.expense.toFixed());
 			setExpensesData(expenses);
-      
+
 			const investmentReturns = retirementData.map((item) =>
 				item.investmentReturn.toFixed()
 			);
@@ -33,7 +33,7 @@ const WealthChart = ({ retirementData }) => {
 		},
 		yAxis: {
 			type: "value",
-      name: "THB"
+			name: "THB",
 		},
 		series: [
 			{
@@ -72,11 +72,7 @@ const WealthChart = ({ retirementData }) => {
 			},
 		},
 	};
-	return (
-		<div className="w-full h-full">
-			<ReactECharts option={chartOption} />
-		</div>
-	);
+	return <ReactECharts option={chartOption} />;
 };
 
 export default WealthChart;

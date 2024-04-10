@@ -2,24 +2,39 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import CalculatorForm from "src/components/CalculatorForm";
 import DataVisualizationSection from "src/components/DataVisualizationSection";
+import NoCalculationsDisplay from "src/components/NoCalculationsDisplay";
 
 const CalculatorPage = () => {
+	const [retirementDataWithFillers, setRetirementDataWithFillers] =
+		useState(null);
 	const [retirementData, setRetirementData] = useState(null);
+
 	useEffect(() => {
-		console.table(retirementData)
-	}, [retirementData])
-	
+		console.table(retirementData);
+		console.table(retirementDataWithFillers);
+	}, [retirementData, retirementDataWithFillers]);
+
 	return (
-		<div>
-			<div className="flex items-center justify-between ml-20 mr-20 rounded-3xl">
-				<div className="p-6 mt-10 bg-blue-100 border border-black border-solid rounded lg:mt-10 lg:ml-1 md:mt-10 md:ml-24 md:mr-24 sm:mt-10 sm:ml-10 sm:mr-10 max-sm:mt-10 max-sm:ml-10 max-sm:mr-10">
+		<div className="flex flex-row mx-5 my-10">
+			<div className="flex justify-center w-4/12 rounded-3xl">
+				<div className="w-full px-12 bg-blue-100 border border-black border-solid rounded">
 					<div className="flex items-center bg-blue-100 lg:justify-start md:justify-center sm:justify-center max-sm:justify-center">
-						<CalculatorForm setRetirementData={setRetirementData} />
+						<CalculatorForm
+							setRetirementData={setRetirementData}
+							setRetirementDataWithFillers={setRetirementDataWithFillers}
+						/>
 					</div>
 				</div>
 			</div>
-			<div>
-				{retirementData && <DataVisualizationSection retirementData={retirementData}/>}
+			<div className="flex flex-col justify-center w-8/12 pl-5">
+				{retirementData ? (
+					<DataVisualizationSection
+						retirementData={retirementData}
+						retirementDataWithFillers={retirementDataWithFillers}
+					/>
+				) : (
+					<NoCalculationsDisplay />
+				)}
 			</div>
 		</div>
 	);

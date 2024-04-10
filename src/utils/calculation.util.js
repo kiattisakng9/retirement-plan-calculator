@@ -22,7 +22,8 @@ export const calculateRetirementData = (
 	monthlyExpense,
 	inflation,
 	investmentReturn,
-	retirementReturn
+	retirementReturn,
+	includeFillers
 ) => {
 	const parsedStartAge = parseInt(startAge);
 	const parsedEndAge = parseInt(endAge);
@@ -35,7 +36,7 @@ export const calculateRetirementData = (
 	const parsedInvestmentReturnDecimal = parseFloat(investmentReturn) / 100;
 	const parsedRetirementReturnDecimal = parseFloat(retirementReturn) / 100;
 
-	const resultData = initializeData(parsedStartAge);
+	const resultData = includeFillers ? initializeData(parsedStartAge) : [];
 	const agePeriod = parseInt(parsedEndAge - parsedStartAge);
 	let currentWealth = parsedInitialFund;
 	let currentAccumulation = 0;
@@ -199,3 +200,12 @@ const calculateWealth = (
  * @returns {boolean} retired status
  */
 const checkRetired = (currentAge, retirementAge) => currentAge > retirementAge;
+
+/**
+ * Format number to locale format with decimals
+ * @param {number} number number to be formatted
+ * @param {number} dec decimal places to format to
+ * @returns formatted number in locale format
+ */
+export const formatLocaleWithDecimals = (number, dec = 0) =>
+	parseFloat(number.toFixed(dec)).toLocaleString();

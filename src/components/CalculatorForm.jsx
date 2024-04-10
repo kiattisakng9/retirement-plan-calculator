@@ -4,7 +4,10 @@ import calculateIcon from "src/assets/images/calculate-icon.gif";
 import FormButton from "src/components/FormButton";
 import { calculateRetirementData } from "src/utils/calculation.util";
 
-const CalculatorForm = ({setRetirementData}) => {
+const CalculatorForm = ({
+	setRetirementData,
+	setRetirementDataWithFillers,
+}) => {
 	const [configName, setConfigName] = useState("");
 	const [age, setAge] = useState(0);
 	const [initialFund, setInitialFund] = useState(0);
@@ -32,6 +35,19 @@ const CalculatorForm = ({setRetirementData}) => {
 			retirementReturn,
 		};
 		console.log("inputValues: ", inputValues);
+		const resultDataWithFillers = calculateRetirementData(
+			age,
+			endAge,
+			initialFund,
+			savingsPerMonth,
+			savingsGrowth,
+			retirementAge,
+			monthlyExpenses,
+			inflation,
+			investmentReturn,
+			retirementReturn,
+			true
+		);
 		const resultData = calculateRetirementData(
 			age,
 			endAge,
@@ -42,10 +58,12 @@ const CalculatorForm = ({setRetirementData}) => {
 			monthlyExpenses,
 			inflation,
 			investmentReturn,
-			retirementReturn
-			);
-			
-			setRetirementData(resultData)
+			retirementReturn,
+			false
+		);
+
+		setRetirementDataWithFillers(resultDataWithFillers);
+		setRetirementData(resultData);
 		e.preventDefault();
 	};
 	return (

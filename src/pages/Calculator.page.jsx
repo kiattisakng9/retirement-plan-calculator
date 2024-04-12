@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import CalculatorForm from "src/components/CalculatorForm";
 import DataVisualizationSection from "src/components/DataVisualizationSection";
 import NoCalculationsDisplay from "src/components/NoCalculationsDisplay";
@@ -8,11 +7,6 @@ const CalculatorPage = () => {
 	const [retirementDataWithFillers, setRetirementDataWithFillers] =
 		useState(null);
 	const [retirementData, setRetirementData] = useState(null);
-
-	useEffect(() => {
-		console.table(retirementData);
-		console.table(retirementDataWithFillers);
-	}, [retirementData, retirementDataWithFillers]);
 
 	return (
 		<div className="flex flex-row mx-5 my-10">

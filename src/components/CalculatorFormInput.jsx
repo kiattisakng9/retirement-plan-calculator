@@ -7,6 +7,7 @@ const CalculatorFormInput = ({
 	inputPlaceholder,
 	inputType,
 	inputStep,
+	inputValue,
   setStateFn,
   isRequired = false
 }) => {
@@ -28,6 +29,7 @@ const CalculatorFormInput = ({
 						name={inputName}
 						id={inputId}
 						step={inputStep}
+						value={inputValue}
 						className=" 
         lg:w-full lg:block lg:rounded-md lg:py-1.5 lg:px-2 lg:ring-1 lg:ring-inset lg:ring-gray-400 lg:focus:text-gray-800 
         md:w-28 md:block md:rounded-md md:py-1.5 md:px-2 md:ring-1 md:ring-inset md:ring-gray-400 md:focus:text-gray-800

@@ -1,26 +1,31 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CalculatorFormInput from "src/components/CalculatorFormInput";
 import calculateIcon from "src/assets/images/calculate-icon.gif";
 import saveIcon from "src/assets/images/save-icon.gif";
 import FormButton from "src/components/FormButton";
 import { calculateRetirementData } from "src/utils/calculation.util";
-import { saveInputConfig } from "src/services/inputConfig.service";
+import {
+	saveInputConfig,
+	fetchInputConfigByID,
+} from "src/services/inputConfig.service";
+import ConfigSelect from "./ConfigSelect";
 
 const CalculatorForm = ({
 	setRetirementData,
 	setRetirementDataWithFillers,
 }) => {
+	const [selectedID, setSelectedID] = useState("");
 	const [configName, setConfigName] = useState("");
-	const [age, setAge] = useState(0);
-	const [initialFund, setInitialFund] = useState(0);
-	const [savingsPerMonth, setSavingsPerMonth] = useState(0);
-	const [savingsGrowth, setSavingsGrowth] = useState(0);
-	const [retirementAge, setRetirementAge] = useState(0);
-	const [monthlyExpenses, setMonthlyExpenses] = useState(0);
-	const [inflation, setInflation] = useState(0);
-	const [investmentReturn, setInvestmentReturn] = useState(0);
-	const [retirementReturn, setRetirementReturn] = useState(0);
-	const [endAge, setEndAge] = useState(99);
+	const [age, setAge] = useState("");
+	const [initialFund, setInitialFund] = useState("");
+	const [savingsPerMonth, setSavingsPerMonth] = useState("");
+	const [savingsGrowth, setSavingsGrowth] = useState("");
+	const [retirementAge, setRetirementAge] = useState("");
+	const [monthlyExpenses, setMonthlyExpenses] = useState("");
+	const [inflation, setInflation] = useState("");
+	const [investmentReturn, setInvestmentReturn] = useState("");
+	const [retirementReturn, setRetirementReturn] = useState("");
+	const [endAge, setEndAge] = useState("");
 
 	/**
 	 * Handle calculation callback
@@ -119,7 +124,6 @@ const CalculatorForm = ({
 				if (responseData && responseData?.message === "success") {
 					alert("Config saved successfully!");
 				}
-				
 			} catch (error) {
 				alert("Something went wrong. Unable to save input configs!");
 			}
@@ -139,16 +143,82 @@ const CalculatorForm = ({
 		]
 	);
 
+	/**
+	 * Handle form inputs clear
+	 * @param {event} e event object
+	 */
+	const handleClearInputs = (e) => {
+		e.preventDefault();
+		clearInputs();
+		clearVisualizationData();
+	};
+
+	/**
+	 * Clear form inputs
+	 */
+	const clearInputs = () => {
+		setAge("");
+		setInitialFund("");
+		setSavingsPerMonth("");
+		setSavingsGrowth("");
+		setRetirementAge("");
+		setMonthlyExpenses("");
+		setInflation("");
+		setInvestmentReturn("");
+		setRetirementReturn("");
+		setEndAge("");
+	};
+
+	/**
+	 * Clear visualization data
+	 */
+	const clearVisualizationData = () => {
+		setRetirementData(null);
+		setRetirementDataWithFillers(null);
+	};
+
+	useEffect(() => {
+		const getConfigInputByID = async () => {
+			try {
+				const selectedConfig = await fetchInputConfigByID(selectedID);
+				const {
+					config_name,
+					age,
+					end_age,
+					initial_fund,
+					investment_return,
+					saving_growth_percentage,
+					monthly_expense,
+					inflation_percentage,
+					retirement_age,
+					savings_per_month,
+					retirement_return,
+				} = selectedConfig?.data?.data || {};
+
+				setConfigName(config_name);
+				setAge(age);
+				setEndAge(end_age);
+				setInitialFund(initial_fund);
+				setInvestmentReturn(investment_return);
+				setSavingsGrowth(saving_growth_percentage);
+				setMonthlyExpenses(monthly_expense);
+				setInflation(inflation_percentage);
+				setRetirementAge(retirement_age);
+				setSavingsPerMonth(savings_per_month);
+				setRetirementReturn(retirement_return);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		if (selectedID !== "") getConfigInputByID();
+	}, [selectedID]);
+
 	return (
 		<form className="py-5">
-			<CalculatorFormInput
-				inputId="config-name-input"
-				inputName="inputConfigName"
-				inputDisplayLabel="Config Name"
-				inputPlaceholder="E.g., Retirement for 35 years old Individual"
-				inputType="text"
-				inputStep="0"
-				setStateFn={setConfigName}
+			<ConfigSelect
+				setConfigName={setConfigName}
+				setSelectedID={setSelectedID}
+				clearInputs={clearInputs}
 			/>
 			<div className="grid gap-2 bg-blue-100 lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-1 max-sm:gap-2 max-sm:whitespace-nowrap">
 				<CalculatorFormInput
@@ -158,6 +228,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 35"
 					inputType="number"
 					inputStep="0"
+					inputValue={age}
 					setStateFn={setAge}
 					isRequired={true}
 				/>
@@ -168,6 +239,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 55"
 					inputType="number"
 					inputStep="0"
+					inputValue={retirementAge}
 					setStateFn={setRetirementAge}
 					isRequired={true}
 				/>
@@ -178,6 +250,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 99"
 					inputType="number"
 					inputStep="0"
+					inputValue={endAge}
 					setStateFn={setEndAge}
 					isRequired={false}
 				/>
@@ -188,6 +261,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 1,000,000"
 					inputType="number"
 					inputStep="0"
+					inputValue={initialFund}
 					setStateFn={setInitialFund}
 					isRequired={true}
 				/>
@@ -198,6 +272,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 30,000"
 					inputType="number"
 					inputStep="0"
+					inputValue={savingsPerMonth}
 					setStateFn={setSavingsPerMonth}
 					isRequired={true}
 				/>
@@ -208,6 +283,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 3"
 					inputType="number"
 					inputStep="0.1"
+					inputValue={savingsGrowth}
 					setStateFn={setSavingsGrowth}
 					isRequired={true}
 				/>
@@ -218,6 +294,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 40,000"
 					inputType="number"
 					inputStep="0"
+					inputValue={monthlyExpenses}
 					setStateFn={setMonthlyExpenses}
 					isRequired={true}
 				/>
@@ -228,6 +305,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 2.5"
 					inputType="number"
 					inputStep="0.1"
+					inputValue={inflation}
 					setStateFn={setInflation}
 					isRequired={true}
 				/>
@@ -238,6 +316,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 4"
 					inputType="number"
 					inputStep="0.1"
+					inputValue={investmentReturn}
 					setStateFn={setInvestmentReturn}
 					isRequired={true}
 				/>
@@ -248,6 +327,7 @@ const CalculatorForm = ({
 					inputPlaceholder="E.g., 3"
 					inputType="number"
 					inputStep="0.1"
+					inputValue={retirementReturn}
 					setStateFn={setRetirementReturn}
 					isRequired={true}
 				/>
@@ -265,6 +345,15 @@ const CalculatorForm = ({
 						buttonText={"Save"}
 						onClickFn={handleSubmit}
 						btnIcon={saveIcon}
+					/>
+				</div>
+			</div>
+			<div className="flex flex-row mt-10 mb-5">
+				<div className="flex justify-center w-full">
+					<FormButton
+						buttonText={"Reset"}
+						onClickFn={handleClearInputs}
+						btnIcon={calculateIcon}
 					/>
 				</div>
 			</div>

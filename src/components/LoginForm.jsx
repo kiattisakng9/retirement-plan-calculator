@@ -10,7 +10,7 @@ const LoginForm = () => {
 	const adminPassword = process.env.REACT_APP_LOGIN_PASSWORD;
 	const { login } = useAuth();
 	const navigate = useNavigate();
-  
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -32,7 +32,9 @@ const LoginForm = () => {
 				onSubmit={handleSubmit}
 			>
 				<div className="grid w-full grid-cols-3 my-2">
-					<label className="px-3 py-2 text-lg text-left" htmlFor="username">Username:</label>
+					<label className="px-3 py-2 text-lg text-left" htmlFor="username">
+						Username:
+					</label>
 					<input
 						type="text"
 						id="username"
@@ -58,7 +60,7 @@ const LoginForm = () => {
 				)}
 				<div className="flex items-center justify-center w-full mt-2">
 					<button
-						className="px-4 py-2 bg-blue-100 border border-black border-solid rounded"
+						className="px-5 py-2 duration-200 bg-blue-200 rounded hover:bg-blue-500"
 						type="submit"
 					>
 						Login

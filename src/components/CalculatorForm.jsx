@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import CalculatorFormInput from "src/components/CalculatorFormInput";
 import calculateIcon from "src/assets/images/calculate-icon.gif";
 import saveIcon from "src/assets/images/save-icon.gif";
+import resetIcon from "src/assets/images/reset-icon.png"
 import FormButton from "src/components/FormButton";
 import { calculateRetirementData } from "src/utils/calculation.util";
 import {
@@ -353,7 +354,7 @@ const CalculatorForm = ({
 					<FormButton
 						buttonText={"Reset"}
 						onClickFn={handleClearInputs}
-						btnIcon={calculateIcon}
+						btnIcon={resetIcon}
 					/>
 				</div>
 			</div>

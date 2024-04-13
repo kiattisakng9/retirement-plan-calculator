@@ -12,7 +12,7 @@ const CalculatorPage = () => {
 		<div className="flex flex-row mx-5 my-10">
 			<div className="flex justify-center w-4/12 rounded-3xl">
 				<div className="w-full px-12 bg-blue-100 border border-black border-solid rounded">
-					<div className="flex items-center bg-blue-100 lg:justify-start md:justify-center sm:justify-center max-sm:justify-center">
+					<div className="flex items-center bg-blue-100 sm:justify-center max-sm:justify-center">
 						<CalculatorForm
 							setRetirementData={setRetirementData}
 							setRetirementDataWithFillers={setRetirementDataWithFillers}

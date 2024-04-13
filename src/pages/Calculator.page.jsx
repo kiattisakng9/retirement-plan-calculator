@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "src/AuthContext";
 import CalculatorForm from "src/components/CalculatorForm";
 import DataVisualizationSection from "src/components/DataVisualizationSection";
 import NoCalculationsDisplay from "src/components/NoCalculationsDisplay";
 
 const CalculatorPage = () => {
+	const { isLoggedIn } = useAuth();
+	const navigate = useNavigate();
+	
+	useEffect(() => {
+		if (!isLoggedIn) navigate("/login");
+	}, [isLoggedIn, navigate]);
+	
 	const [retirementDataWithFillers, setRetirementDataWithFillers] =
 		useState(null);
 	const [retirementData, setRetirementData] = useState(null);
